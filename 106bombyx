@@ -1,0 +1,62 @@
+#!/usr/bin/python3
+
+from math import *
+import sys
+import argparse
+
+parser = argparse.ArgumentParser(description = 'This is my 106bombyx')
+parser.add_argument("n", type = int, help = "number of first generation individuals")
+
+if (len(sys.argv) == 3):
+     parser.add_argument("k", type = float, help = "growth rate from 1 to 4")
+else:
+     parser.add_argument("i0", type = int, help = "initial generation (included)")
+     parser.add_argument("i1", type = int, help = "final generation (included)")
+
+
+try:
+     args = parser.parse_args()
+except:
+     print ("Error when parsing arguments")
+     exit(84)
+
+if (args.n <= 0):
+     print ("n should be superior to 0 !")
+     exit(84)
+
+##
+if (len(sys.argv) == 3):
+     if (args.k < 1 or args.k > 4):
+          print ("args.k should be between 1 and 4")
+          exit(84)
+     x = args.n
+     i = 0
+     while (i < 100):
+          i = i + 1
+          print (i, "%.2f"%x)
+          x = args.k * x * (1000 - x) / 1000
+else :
+     if (args.i0 < 0 or args.i1 < 0):
+          print ("it should be superior to 0")
+          exit(84)
+     if (args.i0 > args.i1):
+          print ("initial generation should be superior to final generation")
+          exit(84)
+     nb = args.i0
+     x = args.n
+     k = 1
+     i = 0
+     while (k <= 4):
+          while (nb != 1):
+               x = k * x * (1000 - x) / 1000
+               nb = nb - 1
+          while (i != (args.i1 - args.i0) + 1):
+               if (x < 0):
+                    x = 0
+               print ("%.2f"%k, "%.2f"%x)
+               i = i + 1
+               x = k * x * (1000 - x) / 1000
+          nb = args.i0
+          k = k + 0.01
+          i = 0
+          x = args.n
